@@ -2,9 +2,6 @@
 
 Token-based user authentication API. JSON in/out.
 
-> Stack: **Node.js (Express)** · **JWT (Bearer)** · **Prisma** · **SQLite**  
-> Security: **bcrypt** (password hashing), `helmet`, rate-limiting, CORS; logout via JWT **deny-list**.
-
 ---
 
 ## 1) Why this stack (fit for the challenge)
@@ -30,36 +27,8 @@ Token-based user authentication API. JSON in/out.
 
 All requests/responses are JSON.
 
----
 
-## 3) Project structure
-.
-├─ prisma/
-│ └─ schema.prisma
-├─ src/
-│ ├─ controllers/
-│ │ ├─ authController.js
-│ │ └─ userController.js
-│ ├─ middleware/
-│ │ └─ auth.js
-│ ├─ routes/
-│ │ ├─ auth.js
-│ │ └─ users.js
-│ ├─ utils/
-│ │ ├─ jwt.js
-│ │ └─ password.js
-│ ├─ db.js
-│ ├─ server.js
-│ ├─ index.js
-│ └─ load-env.js
-├─ .env.example
-├─ package.json
-└─ README.md
-
-
----
-
-## 4) Quick Start
+## 3) Quick Start
 
 ~~~bash
 # 1) Install deps
@@ -86,7 +55,7 @@ curl http://localhost:3000/health
 
 ---
 
-## 5) Environment variables
+## 4) Environment variables
 ~~~dotenv
 DATABASE_URL="file:./dev.db"
 JWT_SECRET="change-me-please"
@@ -96,7 +65,7 @@ PORT=3000
 
 ---
 
-## 6) Database (Prisma + SQLite)
+## 5) Database (Prisma + SQLite)
 - Schema lives in `prisma/schema.prisma`.
 - Create/update DB: `npm run db:push`
 - Regenerate client after schema changes: `npx prisma generate`
@@ -108,9 +77,9 @@ PORT=3000
 
 ---
 
-## 7) API Reference (JSON only)
+## 6) API Reference (JSON only)
 
-### 7.1 Register
+### 6.1 Register
 **POST** `/api/users/register`  
 Body:
 ~~~json
@@ -122,7 +91,7 @@ Body:
 ~~~
 Errors: `400` missing fields, `409` email already in use.
 
-### 7.2 Login (token-based)
+### 6.2 Login (token-based)
 **POST** `/api/auth/login`  
 Body:
 ~~~json
@@ -138,18 +107,18 @@ Body:
 ~~~
 Errors: `400` or `401`.
 
-### 7.3 Authenticated endpoints (require `Authorization: Bearer <token>`)
+### 6.3 Authenticated endpoints (require `Authorization: Bearer <token>`)
 **GET** `/api/users/me` → current profile  
 **PATCH** `/api/users/me` → update `name?`, `email?`, `password?`  
 **DELETE** `/api/users/me` → delete self
 
-### 7.4 Logout (deny-list)
+### 6.4 Logout (deny-list)
 **POST** `/api/auth/logout` → **204 No Content**  
 Revokes the current token’s `jti` until its natural expiration. Further use of the same token returns **401**.
 
 ---
 
-## 8) Minimal cURL flow
+## 7) Minimal cURL flow
 
 ~~~bash
 # Register
